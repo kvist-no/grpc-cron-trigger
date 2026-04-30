@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package kvist.v1;
+
+message CommandRequest {
+  string command = 1;
+  string data = 2;
+  string from = 3;
+  string requester = 4;
+  optional string saga = 5;
+  optional string correlation = 6;
+}
+
+message QueryRequest {
+  string query = 1;
+  string data = 2;
+  string from = 3;
+  string requester = 4;
+}
+
+message CommandResponse {
+  string data = 1;
+}
+
+message QueryResponse {
+  string data = 1;
+  optional QueryExecutionInfo query_execution_info = 2;
+}
+
+message QueryExecutionInfo {
+  repeated DatabaseEntity database_entities = 1;
+}
+
+message DatabaseEntity {
+  string id = 1;
+  string type = 2;
+}
+
+service Service {
+  rpc Command(CommandRequest) returns (CommandResponse) {}
+  rpc Query(QueryRequest) returns (QueryResponse) {
+    option idempotency_level = NO_SIDE_EFFECTS;
+  }
+}
