@@ -1,4 +1,4 @@
-use cron_trigger::service::{
+use grpc_cron_trigger::service::{
     service_server::*, CommandRequest, CommandResponse, QueryRequest, QueryResponse,
 };
 use std::env;
@@ -69,7 +69,7 @@ async fn test_program_sends_grpc_message_on_startup() {
     env::set_var("COMMAND_REQUESTER", "test-requester");
 
     // Run the main function (this will send the gRPC message)
-    let result = cron_trigger::run().await;
+    let result = grpc_cron_trigger::run().await;
 
     // Verify the result
     assert!(result.is_ok(), "Main function should complete successfully");

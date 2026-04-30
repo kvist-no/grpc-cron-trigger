@@ -1,5 +1,5 @@
 [package]
-name = "cron-trigger"
+name = "grpc-cron-trigger"
 version = "0.1.0"
 edition = "2021"
 

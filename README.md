@@ -1,4 +1,4 @@
-# cron-trigger
+# grpc-cron-trigger
 
 A small Rust binary that fires a single `kvist.v1.Service/Command` gRPC call to a backend service, with Sentry cron check-ins around it. Designed to run as a Kubernetes `CronJob`: one container per scheduled run, one gRPC call, exit.
 
@@ -28,7 +28,7 @@ On each invocation the binary:
 
 | Variable | Default | Description |
 | --- | --- | --- |
-| `COMMAND_FROM` | `Kubernetes Cron Trigger` | Free-text "from" field shown in logs/audit. |
+| `COMMAND_FROM` | `Kubernetes gRPC Cron Trigger` | Free-text "from" field shown in logs/audit. |
 | `COMMAND_DATA` | `{}` | JSON payload passed to the command handler. |
 | `COMMAND_REQUESTER` | `""` | Optional requester identifier. |
 | `RUST_LOG` | _(unset)_ | Standard `env_logger` filter, e.g. `info`. |
@@ -58,8 +58,8 @@ spec:
             config.alpha.linkerd.io/proxy-enable-native-sidecar: "true"
         spec:
           containers:
-            - name: cron-trigger
-              image: ghcr.io/kvist-no/cron-trigger:sha-XXXXXXX
+            - name: grpc-cron-trigger
+              image: ghcr.io/kvist-no/grpc-cron-trigger:sha-XXXXXXX
               envFrom:
                 - secretRef:
                     name: my-cron-config
