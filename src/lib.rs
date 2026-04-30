@@ -76,8 +76,7 @@ pub mod main {
     async fn trigger_command(notification_service_url: String) -> Result<()> {
         let mut service_client = ServiceClient::connect(notification_service_url.clone()).await?;
 
-        let from =
-            get_env_var("COMMAND_FROM").unwrap_or(String::from("Kubernetes gRPC Cron Trigger"));
+        let from = get_env_var("COMMAND_FROM")?;
 
         let command = get_env_var("COMMAND_COMMAND")?;
 

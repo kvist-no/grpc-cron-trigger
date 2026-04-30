@@ -23,12 +23,12 @@ On each invocation the binary:
 | `CRON_URL` | Sentry cron monitor check-in URL. Each cron should have its own monitor. |
 | `NOTIFICATION_SERVICE_URL` | gRPC endpoint of the target service (e.g. `https://notification.init.svc.cluster.local:8080`). |
 | `COMMAND_COMMAND` | Name of the command handler to invoke on the target service. |
+| `COMMAND_FROM` | Free-text "from" field shown in logs/audit. Set per cron so failures are easy to attribute. |
 
 ### Optional
 
 | Variable | Default | Description |
 | --- | --- | --- |
-| `COMMAND_FROM` | `Kubernetes gRPC Cron Trigger` | Free-text "from" field shown in logs/audit. |
 | `COMMAND_DATA` | `{}` | JSON payload passed to the command handler. |
 | `COMMAND_REQUESTER` | `""` | Optional requester identifier. |
 | `RUST_LOG` | _(unset)_ | Standard `env_logger` filter, e.g. `info`. |
