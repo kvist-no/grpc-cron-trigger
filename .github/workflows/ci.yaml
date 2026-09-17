@@ -4,6 +4,10 @@ on:
   push:
     branches: [ "main" ]
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -51,17 +55,27 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: |
-            ghcr.io/${{ github.repository }}
+            europe-north1-docker.pkg.dev/dev-vinci/infrastructure/${{ github.repository }}
+            europe-north1-docker.pkg.dev/backend-prod-347716/infrastructure/${{ github.repository }}
           tags: |
             type=sha
             type=raw,value={{date 'YYYY-MM-DDTHH:mm:ss' tz='Europe/Madrid' }}
-            type=ref,event=branch
+
+      # Short-lived Google credential through the GitHub OIDC federation in
+      # kvist-no/infra (opentofu/modules/gcp-backend-registry/github.tf).
+      # Only pushes to the default branch are trusted by that provider.
+      - id: google-auth
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/388850703528/locations/global/workloadIdentityPools/github-actions/providers/github
+          service_account: infra-image-publisher@dev-vinci.iam.gserviceaccount.com
+          token_format: access_token
 
       - uses: docker/login-action@v3
         with:
-          registry: ghcr.io
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          registry: europe-north1-docker.pkg.dev
+          username: oauth2accesstoken
+          password: ${{ steps.google-auth.outputs.access_token }}
 
       - uses: docker/build-push-action@v5
         with:
