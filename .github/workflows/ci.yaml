@@ -85,5 +85,7 @@ jobs:
           file: ./Dockerfile
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+          pull: true
+          no-cache: true
           push: true
           platforms: linux/amd64
