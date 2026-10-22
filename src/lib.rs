@@ -116,6 +116,9 @@ pub mod main {
 
 pub mod sentry;
 
+// Tonic 0.13 generates async traits with redundant must_use attributes.
+// Keep this allowance confined to generated code; Rust 1.99 flags it in CI.
+#[allow(clippy::double_must_use)]
 pub mod service {
     tonic::include_proto!("kvist.v1");
 }
