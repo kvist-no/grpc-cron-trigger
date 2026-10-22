@@ -1,7 +1,7 @@
 FROM rust:1.87 AS builder
 WORKDIR /usr/src/grpc-cron-trigger
 COPY . .
-RUN apt update && apt install -y protobuf-compiler
+RUN apt update && apt install -y protobuf-compiler ca-certificates
 RUN cargo install --path . --bin grpc-cron-trigger --locked
 
 FROM debian:bookworm-slim
